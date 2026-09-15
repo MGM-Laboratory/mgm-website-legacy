@@ -3,7 +3,7 @@
 # Build context is the monorepo root:
 #   docker build -f apps/web/Dockerfile -t website-web .
 
-FROM node:22-alpine AS base
+FROM node:26-alpine AS base
 RUN corepack enable
 
 # 1. Prune the monorepo down to what `web` actually needs
@@ -25,7 +25,7 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN pnpm turbo run build --filter=web
 
 # 3. Final runtime image — Next.js standalone output is already self-contained
-FROM node:22-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
