@@ -3,7 +3,7 @@
 # Build context is the monorepo root:
 #   docker build -f apps/api/Dockerfile -t website-api .
 
-FROM node:22-alpine AS base
+FROM node:26-alpine AS base
 RUN corepack enable
 
 # 1. Prune the monorepo down to what `api` actually needs
@@ -32,7 +32,7 @@ COPY --from=pruner /app/out/json/ .
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # 4. Final runtime image
-FROM node:22-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nestjs && adduser --system --uid 1001 nestjs
